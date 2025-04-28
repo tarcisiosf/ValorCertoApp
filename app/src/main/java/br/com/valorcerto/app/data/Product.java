@@ -14,7 +14,7 @@ public class Product {
     private double price;
     private String imageUrl;
 
-    // Construtor (pode ser sem parâmetros)
+    // Construtor
     public Product() { }
 
     // Getters e Setters
