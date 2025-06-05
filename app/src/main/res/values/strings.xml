@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ValorCerto</string>
+    <string name="product_image">Imagem do produto</string>
 </resources>
