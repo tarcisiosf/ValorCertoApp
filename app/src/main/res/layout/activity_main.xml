@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+
     <TextView
         android:id="@+id/tvTitleMain"
         android:layout_width="wrap_content"
@@ -40,29 +41,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
+
     <Button
         android:id="@+id/btnFinalize"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="48dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Finalizar Compra"
         android:textAllCaps="false"
-        android:backgroundTint="@color/colorPrimary"
-        android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvTotal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvTotal"/>
-
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="28dp"
         android:text="Total: R$ 0,00"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/fabScanner"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabScanner"
@@ -74,5 +79,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/AbrirHistório"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Histórico"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="659dp"
+        android:onClick="abrirHistorico"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
