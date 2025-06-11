@@ -7,4 +7,9 @@
     <color name="fundoLight">#F2F2F2</color>
     <color name="textoPrimary">#212121</color>
     <color name="colorSecundary">#03DAC5</color>
+    <color name="Principal">#0097D4</color>
+    <color name="Secundaria">#F07108</color>
+    <color name="Terceira">#F79B06</color>
+
+
 </resources>

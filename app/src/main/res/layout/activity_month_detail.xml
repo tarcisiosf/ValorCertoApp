@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/Principal"
     android:padding="16dp">
 
     <TextView
@@ -11,6 +13,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Abril/2025"
+        android:background="@color/Secundaria"
+        android:textColor="@color/white"
+        android:paddingVertical="3dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
