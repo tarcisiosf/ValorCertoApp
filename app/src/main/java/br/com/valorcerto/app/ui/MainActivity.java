@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import br.com.valorcerto.app.R;
 import br.com.valorcerto.app.data.Product;
@@ -52,17 +53,20 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // 1️⃣ Referencia as views
-        fabScanner = findViewById(R.id.fabScanner);
-        btnFinalize = findViewById(R.id.btnFinalize);
+        // 1️⃣ Referência as views
+        fabScanner     = findViewById(R.id.fabScanner);
+        btnFinalize    = findViewById(R.id.btnFinalize);
         rvShoppingList = findViewById(R.id.rvShoppingList);
-        tvTotal = findViewById(R.id.tvTotal);
-        btnHistorico = findViewById(R.id.btnHistorico);
+        tvTotal        = findViewById(R.id.tvTotal);
+        btnHistorico   = findViewById(R.id.btnHistorico);
 
         // 2️⃣ Instancia os DAOs
         purchaseItemDao = ValorCertoApp.getDatabase().purchaseItemDao();
-        productDao     = ValorCertoApp.getDatabase().productDao();
-        purchaseDao    = ValorCertoApp.getDatabase().purchaseDao();
+        productDao      = ValorCertoApp.getDatabase().productDao();
+        purchaseDao     = ValorCertoApp.getDatabase().purchaseDao();
+
+        // 2.1️⃣ Popula o banco com dois produtos "chumbados" para testes
+
 
         // 3️⃣ Configura RecyclerView + Adapter
         adapter = new PurchaseAdapter(items, productDao);
@@ -78,15 +82,13 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE_SCAN);
         });
 
-        btnHistorico.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,HistoryActivity.class);
-                startActivity(intent);
-            }
+        // 6️⃣ Histórico
+        btnHistorico.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
         });
 
-        // 6️⃣ Botão Finalizar Compra
+        // 7️⃣ Botão Finalizar Compra
         btnFinalize.setOnClickListener(v -> {
             if (items.isEmpty()) {
                 Toast.makeText(this,
@@ -96,21 +98,20 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // Persiste a compra completa em background
             new Thread(() -> {
-                // 6.1️⃣ Cria o registro Purchase
+                // 7.1️⃣ Cria o registro Purchase
                 Purchase purchase = new Purchase();
                 purchase.setUserId(1);  // TODO: substituir pelo ID do usuário logado
                 purchase.setPurchaseDate(new Date());
                 long purchaseId = purchaseDao.insert(purchase);
 
-                // 6.2️⃣ Persiste cada PurchaseItem vinculado
+                // 7.2️⃣ Persiste cada PurchaseItem vinculado
                 for (PurchaseItem item : items) {
                     item.setPurchaseId((int) purchaseId);
                     purchaseItemDao.insert(item);
                 }
 
-                // 6.3️⃣ Limpa lista e atualiza UI
+                // 7.3️⃣ Limpa lista e atualiza UI
                 runOnUiThread(() -> {
                     items.clear();
                     adapter.notifyDataSetChanged();
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 7️⃣ Recebe resultado do scanner
+    // 8️⃣ Recebe resultado do scanner
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,28 +133,34 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK && data != null) {
             String productCode = data.getStringExtra("scanned_product_code");
 
-            // Insere o item escaneado
             new Thread(() -> {
-                // Cria PurchaseItem
                 PurchaseItem item = new PurchaseItem();
                 item.setProductCode(productCode);
                 item.setQuantity(1);
 
                 Product p = productDao.findByCode(productCode);
-                item.setUnitPrice(p.getPrice());
+                if (p != null) {
+                    item.setUnitPrice(p.getPrice());
+                    purchaseItemDao.insert(item);
 
-                purchaseItemDao.insert(item);
-
-                runOnUiThread(() -> {
-                    items.add(item);
-                    adapter.notifyItemInserted(items.size() - 1);
-                    updateTotal();
-                });
+                    runOnUiThread(() -> {
+                        items.add(item);
+                        adapter.notifyItemInserted(items.size() - 1);
+                        updateTotal();
+                    });
+                } else {
+                    runOnUiThread(() ->
+                            Toast.makeText(this,
+                                    "Produto não cadastrado: " + productCode,
+                                    Toast.LENGTH_LONG
+                            ).show()
+                    );
+                }
             }).start();
         }
     }
 
-    // 8️⃣ Atualiza o TextView com o total da compra
+    // 9️⃣ Atualiza o TextView com o total da compra
     private void updateTotal() {
         double sum = 0;
         for (PurchaseItem i : items) {
