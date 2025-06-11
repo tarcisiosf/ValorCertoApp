@@ -2,6 +2,8 @@ package br.com.valorcerto.app.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -29,6 +31,7 @@ import br.com.valorcerto.app.domain.Period;
 public class HistoryActivity extends AppCompatActivity {
     private RecyclerView rvPeriods;
     private PeriodAdapter adapter;
+    private Button voltar;
     private final List<Period> periods = new ArrayList<>();
 
     private PurchaseDao purchaseDao;
@@ -46,10 +49,19 @@ public class HistoryActivity extends AppCompatActivity {
 
         // 1️⃣ Referencia o RecyclerView
         rvPeriods = findViewById(R.id.rvPeriods);
+        voltar = findViewById(R.id.btnVoltar);
 
         // 2️⃣ Obtém instâncias dos DAOs
         purchaseDao     = ValorCertoApp.getDatabase().purchaseDao();
         purchaseItemDao = ValorCertoApp.getDatabase().purchaseItemDao();
+
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // 3️⃣ Configura o Adapter com o listener de clique e o LayoutManager
         adapter = new PeriodAdapter(

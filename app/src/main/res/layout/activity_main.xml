@@ -88,17 +88,17 @@
         android:layout_margin="16dp"/>
 
     <Button
-        android:id="@+id/AbrirHistório"
+        android:id="@+id/btnHistorico"
         android:layout_width="110dp"
         android:layout_height="50dp"
         android:backgroundTint="@color/Secundaria"
         android:text="Histórico"
+        android:textSize="14dp"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="659dp"
-        android:onClick="abrirHistorico"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,7 +33,7 @@ import br.com.valorcerto.app.ValorCertoApp;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SCAN = 1001;
     private FloatingActionButton fabScanner;
-    private Button btnFinalize;
+    private Button btnFinalize, btnHistorico;
     private TextView tvTotal;
     private RecyclerView rvShoppingList;
     private PurchaseAdapter adapter;
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         btnFinalize = findViewById(R.id.btnFinalize);
         rvShoppingList = findViewById(R.id.rvShoppingList);
         tvTotal = findViewById(R.id.tvTotal);
+        btnHistorico = findViewById(R.id.btnHistorico);
 
         // 2️⃣ Instancia os DAOs
         purchaseItemDao = ValorCertoApp.getDatabase().purchaseItemDao();
@@ -75,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
         fabScanner.setOnClickListener(v -> {
             Intent intent = new Intent(this, ScannerActivity.class);
             startActivityForResult(intent, REQUEST_CODE_SCAN);
+        });
+
+        btnHistorico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,HistoryActivity.class);
+                startActivity(intent);
+            }
         });
 
         // 6️⃣ Botão Finalizar Compra
